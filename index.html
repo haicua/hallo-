@@ -2,64 +2,130 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>💖 For You 💖</title>
+<title>Valentine 💖</title>
 
 <style>
 body {
     text-align: center;
-    margin-top: 150px;
+    margin-top: 80px;
     font-family: Arial;
     background-color: #ffe6f0;
+    overflow: hidden;
 }
 
 h1 {
     color: #ff3399;
-    font-size: 35px;
+    font-size: 32px;
+    transition: 0.5s;
 }
 
 button {
     padding: 15px 35px;
-    font-size: 22px;
+    font-size: 20px;
     margin: 20px;
     border: none;
     border-radius: 15px;
     cursor: pointer;
     transition: 0.3s;
+    position: absolute;
 }
 
 #yesBtn {
     background-color: #ff4da6;
     color: white;
+    left: 35%;
+    top: 60%;
 }
 
 #noBtn {
     background-color: #cccccc;
+    left: 55%;
+    top: 60%;
+}
+
+img {
+    width: 220px;
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Tim bay */
+.heart {
+    position: absolute;
+    color: #ff3399;
+    font-size: 20px;
+    animation: floatUp 3s linear forwards;
+}
+
+@keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-200px); }
 }
 </style>
 </head>
 
 <body>
 
-<h1>Em làm người yêu anh nhé? 💕</h1>
+<h1>Valentine này em có muốn đi chơi cùng anh không? 🥺💖</h1>
 
-<button id="yesBtn">Yes 💖</button>
-<button id="noBtn">No 🙈</button>
+<img id="bearImg" src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif">
+
+<br><br>
+
+<button id="yesBtn">Chắc chắn rồi 💖</button>
+<button id="noBtn">Không 🙈</button>
 
 <script>
-let size = 1;
 
-document.getElementById("noBtn").addEventListener("click", function() {
-    size += 0.4;
-    document.getElementById("yesBtn").style.transform = "scale(" + size + ")";
-    
-    if(size > 5){
-        document.getElementById("noBtn").style.display = "none";
+let noBtn = document.getElementById("noBtn");
+let yesBtn = document.getElementById("yesBtn");
+let noSize = 1;
+
+// Nút Không chạy và nhỏ dần
+noBtn.addEventListener("mouseover", function() {
+
+    let x = Math.random() * (window.innerWidth - 100);
+    let y = Math.random() * (window.innerHeight - 50);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+    noSize -= 0.1;
+    if(noSize > 0.2){
+        noBtn.style.transform = "scale(" + noSize + ")";
     }
 });
 
-document.getElementById("yesBtn").addEventListener("click", function() {
-    document.body.innerHTML = "<h1 style='color:#ff3399'>Anh biết mà 😘💖</h1>";
+// Khi bấm đồng ý
+yesBtn.addEventListener("click", function() {
+
+    // Tim bay
+    for(let i = 0; i < 30; i++){
+        let heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "💖";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.top = Math.random() * window.innerHeight + "px";
+        heart.style.fontSize = (Math.random() * 20 + 20) + "px";
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 3000);
+    }
+
+    setTimeout(() => {
+        document.body.innerHTML = `
+            <h1 style="color:#ff3399; font-size:40px;">Anh biết ngay mà 😘💖</h1>
+            <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" style="width:260px;">
+        `;
+    }, 1000);
 });
+
 </script>
 
 </body>
