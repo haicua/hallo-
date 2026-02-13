@@ -33,21 +33,19 @@ button {
     transition: 0.3s ease;
 }
 
-/* Nút Có luôn căn giữa */
 #yesBtn {
     background: #ff4da6;
     color: white;
     position: fixed;
-    left: 50%;
+    left: 40%;
     top: 70%;
     transform: translate(-50%, -50%) scale(1);
 }
 
-/* Nút Không */
 #noBtn {
     background: #cccccc;
     position: fixed;
-    left: 65%;
+    left: 60%;
     top: 70%;
 }
 </style>
@@ -71,19 +69,31 @@ let noBtn = document.getElementById("noBtn");
 
 let yesScale = 1;
 let noScale = 1;
-let started = false;
+let firstClick = false;
+
+// Hàm kiểm tra đè nhau
+function isOverlap(r1, r2) {
+    return !(
+        r1.right < r2.left ||
+        r1.left > r2.right ||
+        r1.bottom < r2.top ||
+        r1.top > r2.bottom
+    );
+}
 
 noBtn.addEventListener("click", function(){
 
-    // Sau click đầu tiên thì bắt đầu logic
-    started = true;
+    // Sau click đầu tiên thì Có ra giữa
+    if(!firstClick){
+        firstClick = true;
+        yesBtn.style.left = "50%";
+        yesBtn.style.top = "50%";
+    }
 
-    // Không chạy loạn
-    let maxX = window.innerWidth - noBtn.offsetWidth;
-    let maxY = window.innerHeight - noBtn.offsetHeight;
-
-    noBtn.style.left = Math.random() * maxX + "px";
-    noBtn.style.top = Math.random() * maxY + "px";
+    // Có to mạnh
+    yesScale += 0.5;
+    yesBtn.style.transform =
+        "translate(-50%, -50%) scale(" + yesScale + ")";
 
     // Không nhỏ dần
     noScale -= 0.08;
@@ -91,24 +101,40 @@ noBtn.addEventListener("click", function(){
         noBtn.style.transform = "scale(" + noScale + ")";
     }
 
-    // Có phóng to mạnh và luôn ở giữa
-    yesScale += 0.5;
+    // Không chạy loạn nhưng tránh đè lên Có
+    let maxX = window.innerWidth - noBtn.offsetWidth;
+    let maxY = window.innerHeight - noBtn.offsetHeight;
 
-    yesBtn.style.left = "50%";
-    yesBtn.style.top = "50%";
-    yesBtn.style.transform =
-        "translate(-50%, -50%) scale(" + yesScale + ")";
+    let tries = 0;
+    let overlap;
+
+    do {
+        let randomX = Math.random() * maxX;
+        let randomY = Math.random() * maxY;
+
+        noBtn.style.left = randomX + "px";
+        noBtn.style.top = randomY + "px";
+
+        let noRect = noBtn.getBoundingClientRect();
+        let yesRect = yesBtn.getBoundingClientRect();
+
+        overlap = isOverlap(noRect, yesRect);
+
+        tries++;
+
+    } while (overlap && tries < 100);
+
 });
 
 yesBtn.addEventListener("click", function(){
 
     document.body.innerHTML = `
-    <h1 style="color:#ff3399;font-size:55px;">
-    Anh biết ngay mà 💖
-    </h1>
+        <h1 style="color:#ff3399;font-size:55px;">
+        Anh biết ngay mà 💖
+        </h1>
 
-    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXF0b2ZnZXV2aWRweXJqdDM4dWluMDhiODU5NGRkeGw3M3Iyd2p6ZCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/8YNvL3sPHoyC4s02hK/giphy.gif"
-    style="width:300px;">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXF0b2ZnZXV2aWRweXJqdDM4dWluMDhiODU5NGRkeGw3M3Iyd2p6ZCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/8YNvL3sPHoyC4s02hK/giphy.gif"
+        style="width:300px;">
     `;
 });
 
