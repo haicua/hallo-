@@ -16,7 +16,6 @@ body {
 h1 {
     color: #ff3399;
     font-size: 32px;
-    transition: 0.5s;
 }
 
 button {
@@ -44,27 +43,7 @@ button {
 }
 
 img {
-    width: 220px;
-    animation: bounce 1.5s infinite;
-}
-
-@keyframes bounce {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0px); }
-}
-
-/* Tim bay */
-.heart {
-    position: absolute;
-    color: #ff3399;
-    font-size: 20px;
-    animation: floatUp 3s linear forwards;
-}
-
-@keyframes floatUp {
-    0% { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-200px); }
+    width: 230px;
 }
 </style>
 </head>
@@ -73,57 +52,49 @@ img {
 
 <h1>Valentine này em có muốn đi chơi cùng anh không? 🥺💖</h1>
 
-<img id="bearImg" src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif">
+<!-- 👉 DÁN LINK GIF GẤU CỦA BẠN Ở ĐÂY -->
+<img id="bearImg" src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MGl4bDNlbGJlMnp3angyMjZuY2t4azNqZDM4dDlhMDJmb2syb2VnZCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/9xghIQ617XHnGYN3jG/giphy.gif">
 
 <br><br>
 
-<button id="yesBtn">Chắc chắn rồi 💖</button>
+<button id="yesBtn">Có 💖</button>
 <button id="noBtn">Không 🙈</button>
 
 <script>
 
 let noBtn = document.getElementById("noBtn");
 let yesBtn = document.getElementById("yesBtn");
-let noSize = 1;
 
-// Nút Không chạy và nhỏ dần
-noBtn.addEventListener("mouseover", function() {
+let noClickCount = 0;
+let yesSize = 1;
 
-    let x = Math.random() * (window.innerWidth - 100);
-    let y = Math.random() * (window.innerHeight - 50);
+// Khi bấm "Không"
+noBtn.addEventListener("click", function() {
+
+    noClickCount++;
+
+    // Nút chạy loạn
+    let x = Math.random() * (window.innerWidth - 120);
+    let y = Math.random() * (window.innerHeight - 60);
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
 
-    noSize -= 0.1;
-    if(noSize > 0.2){
-        noBtn.style.transform = "scale(" + noSize + ")";
+    // Nút "Có" to dần
+    yesSize += 0.2;
+    yesBtn.style.transform = "scale(" + yesSize + ")";
+
+    // Sau 15 lần bấm thì biến mất
+    if(noClickCount >= 15){
+        noBtn.style.display = "none";
     }
 });
 
-// Khi bấm đồng ý
+// Khi bấm "Có"
 yesBtn.addEventListener("click", function() {
-
-    // Tim bay
-    for(let i = 0; i < 30; i++){
-        let heart = document.createElement("div");
-        heart.className = "heart";
-        heart.innerHTML = "💖";
-        heart.style.left = Math.random() * window.innerWidth + "px";
-        heart.style.top = Math.random() * window.innerHeight + "px";
-        heart.style.fontSize = (Math.random() * 20 + 20) + "px";
-        document.body.appendChild(heart);
-
-        setTimeout(() => {
-            heart.remove();
-        }, 3000);
-    }
-
-    setTimeout(() => {
-        document.body.innerHTML = `
-            <h1 style="color:#ff3399; font-size:40px;">Anh biết ngay mà 😘💖</h1>
-            <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" style="width:260px;">
-        `;
-    }, 1000);
+    document.body.innerHTML = `
+        <h1 style="color:#ff3399; font-size:40px;">Anh biết ngay mà 😘💖</h1>
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXF0b2ZnZXV2aWRweXJqdDM4dWluMDhiODU5NGRkeGw3M3Iyd2p6ZCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/8YNvL3sPHoyC4s02hK/giphy.gif">
+    `;
 });
 
 </script>
