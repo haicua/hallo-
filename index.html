@@ -25,27 +25,30 @@ img {
 }
 
 button {
-    padding: 15px 35px;
-    font-size: 20px;
+    padding: 18px 40px;
+    font-size: 22px;
     border: none;
     border-radius: 15px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.3s ease;
 }
 
+/* Nút Có luôn căn giữa */
 #yesBtn {
     background: #ff4da6;
     color: white;
     position: fixed;
-    left: 35%;
-    top: 65%;
+    left: 50%;
+    top: 70%;
+    transform: translate(-50%, -50%) scale(1);
 }
 
+/* Nút Không */
 #noBtn {
     background: #cccccc;
     position: fixed;
-    left: 55%;
-    top: 65%;
+    left: 65%;
+    top: 70%;
 }
 </style>
 </head>
@@ -54,8 +57,7 @@ button {
 
 <h1>Valentine này em có muốn đi chơi cùng anh không? </h1>
 
-<img id="bearImg"
-src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MGl4bDNlbGJlMnp3angyMjZuY2t4azNqZDM4dDlhMDJmb2syb2VnZCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/9xghIQ617XHnGYN3jG/giphy.gif">
+<img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MGl4bDNlbGJlMnp3angyMjZuY2t4azNqZDM4dDlhMDJmb2syb2VnZCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/9xghIQ617XHnGYN3jG/giphy.gif">
 
 <br><br>
 
@@ -66,58 +68,48 @@ src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MGl4bDNlbGJlMnp3angyMjZuY2
 
 let yesBtn = document.getElementById("yesBtn");
 let noBtn = document.getElementById("noBtn");
-let bearImg = document.getElementById("bearImg");
 
-let noCount = 0;
 let yesScale = 1;
 let noScale = 1;
+let started = false;
 
 noBtn.addEventListener("click", function(){
 
-    noCount++;
+    // Sau click đầu tiên thì bắt đầu logic
+    started = true;
 
-    // Bắt đầu chạy loạn sau khi bấm
+    // Không chạy loạn
     let maxX = window.innerWidth - noBtn.offsetWidth;
     let maxY = window.innerHeight - noBtn.offsetHeight;
 
-    let randomX = Math.random() * maxX;
-    let randomY = Math.random() * maxY;
-
-    noBtn.style.left = randomX + "px";
-    noBtn.style.top = randomY + "px";
-
-    // Có to nhanh
-    yesScale += 0.7;
-    yesBtn.style.transform = "scale(" + yesScale + ")";
+    noBtn.style.left = Math.random() * maxX + "px";
+    noBtn.style.top = Math.random() * maxY + "px";
 
     // Không nhỏ dần
-    noScale -= 0.09;
+    noScale -= 0.08;
     if(noScale > 0.1){
         noBtn.style.transform = "scale(" + noScale + ")";
     }
 
-    // Sau 15 lần biến mất
-    if(noCount >= 15){
-        noBtn.style.display = "none";
-    }
+    // Có phóng to mạnh và luôn ở giữa
+    yesScale += 0.5;
+
+    yesBtn.style.left = "50%";
+    yesBtn.style.top = "50%";
+    yesBtn.style.transform =
+        "translate(-50%, -50%) scale(" + yesScale + ")";
 });
 
 yesBtn.addEventListener("click", function(){
 
-    // Hiệu ứng phóng to mạnh
-    yesBtn.style.transform = "scale(3)";
-    yesBtn.style.transition = "0.5s";
+    document.body.innerHTML = `
+    <h1 style="color:#ff3399;font-size:55px;">
+    Anh biết ngay mà 💖
+    </h1>
 
-    setTimeout(function(){
-        document.body.innerHTML = `
-        <h1 style="color:#ff3399;font-size:50px;">
-        Anh biết ngay mà 😘💞
-        </h1>
-
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXF0b2ZnZXV2aWRweXJqdDM4dWluMDhiODU5NGRkeGw3M3Iyd2p6ZCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/8YNvL3sPHoyC4s02hK/giphy.gif"
-        style="width:280px;">
-        `;
-    }, 500);
+    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXF0b2ZnZXV2aWRweXJqdDM4dWluMDhiODU5NGRkeGw3M3Iyd2p6ZCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/8YNvL3sPHoyC4s02hK/giphy.gif"
+    style="width:300px;">
+    `;
 });
 
 </script>
